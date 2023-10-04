@@ -14,7 +14,7 @@ public class PlayerState
 
     public virtual void Enter()
     {
-        
+        Player.Animator.SetBool(_animBoolName, true);
     }
 
     public virtual void Update()
@@ -24,6 +24,6 @@ public class PlayerState
 
     public virtual void Exit()
     {
-        
+        Player.Animator.SetBool(_animBoolName, false);
     }
 }
