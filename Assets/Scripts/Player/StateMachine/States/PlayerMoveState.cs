@@ -9,7 +9,11 @@ public class PlayerMoveState : PlayerState
 
     public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
+        base.Update();
+        
+        Player.SetVelocity(XInput * Player.moveSpeed, Player.Rigidbody2D.velocity.y);
+        
+        if (XInput == 0)
         {
             StateMachine.ChangeState(Player.IdleState);
         }

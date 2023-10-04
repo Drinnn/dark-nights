@@ -1,9 +1,13 @@
+using UnityEngine;
+
 public class PlayerState
 {
     protected Player Player;
     protected PlayerStateMachine StateMachine;
 
     private string _animBoolName;
+
+    protected float XInput;
 
     public PlayerState(Player player, PlayerStateMachine stateMachine, string animBoolName)
     {
@@ -19,7 +23,7 @@ public class PlayerState
 
     public virtual void Update()
     {
-        
+        XInput = Input.GetAxisRaw("Horizontal");
     }
 
     public virtual void Exit()

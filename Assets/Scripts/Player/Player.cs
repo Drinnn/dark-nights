@@ -1,15 +1,21 @@
-using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] public float moveSpeed = 8f;
+    
     #region Components
     public Animator Animator
     {
         get => _animator;
     }
+    public Rigidbody2D Rigidbody2D
+    {
+        get => _rigidbody2D;
+    }
     
     private Animator _animator;
+    private Rigidbody2D _rigidbody2D;
     #endregion
     
     #region StateMachine
@@ -33,7 +39,8 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        _animator = GetComponentInChildren<Animator>(); 
+        _animator = GetComponentInChildren<Animator>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         _stateMachine = new PlayerStateMachine();
 
         _idleState = new PlayerIdleState(this, _stateMachine, "Idle");
@@ -48,5 +55,10 @@ public class Player : MonoBehaviour
     private void Update()
     {
         _stateMachine.CurrentState.Update();
+    }
+
+    public void SetVelocity(float xVelocity, float yVelocity)
+    {
+        _rigidbody2D.velocity = new Vector2(xVelocity, yVelocity);
     }
 }
