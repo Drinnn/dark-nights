@@ -3,7 +3,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] public float moveSpeed = 8f;
-    
+    [SerializeField] public float jumpForce = 12f;
+
     #region Components
     public Animator Animator
     {
@@ -31,10 +32,22 @@ public class Player : MonoBehaviour
     {
         get => _moveState;
     }
+
+    public PlayerJumpState JumpState
+    {
+        get => _jumpState;
+    }
+
+    public PlayerAirState AirState
+    {
+        get => _airState;
+    }
     
     private PlayerStateMachine _stateMachine;
     private PlayerIdleState _idleState;
     private PlayerMoveState _moveState;
+    private PlayerJumpState _jumpState;
+    private PlayerAirState _airState;
     #endregion
 
     private void Awake()
@@ -45,6 +58,8 @@ public class Player : MonoBehaviour
 
         _idleState = new PlayerIdleState(this, _stateMachine, "Idle");
         _moveState = new PlayerMoveState(this, _stateMachine, "Move");
+        _jumpState = new PlayerJumpState(this, _stateMachine, "Jump");
+        _airState  = new PlayerAirState(this, _stateMachine, "Jump");
     }
 
     private void Start()
