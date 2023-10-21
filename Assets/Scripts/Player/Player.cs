@@ -1,9 +1,19 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Move Info")]
     [SerializeField] public float moveSpeed = 8f;
     [SerializeField] public float jumpForce = 12f;
+
+    [Header("Collision Info")] 
+    [SerializeField] private LayerMask groundCheckLayerMask;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundedCheckDistance;
+    [SerializeField] private LayerMask wallCheckLayerMask;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private float wallCheckDistance;
 
     #region Components
     public Animator Animator
@@ -50,6 +60,12 @@ public class Player : MonoBehaviour
     private PlayerAirState _airState;
     #endregion
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundedCheckDistance));
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
+    }
+
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
@@ -76,4 +92,7 @@ public class Player : MonoBehaviour
     {
         _rigidbody2D.velocity = new Vector2(xVelocity, yVelocity);
     }
+
+    public bool IsGroundDetected() =>
+        Physics2D.Raycast(groundCheck.position, Vector2.down, groundedCheckDistance, groundCheckLayerMask);
 }
