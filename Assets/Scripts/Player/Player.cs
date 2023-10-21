@@ -60,6 +60,14 @@ public class Player : MonoBehaviour
     private PlayerAirState _airState;
     #endregion
 
+    public int FacingDirection
+    {
+        get => _facingDirection;
+    }
+
+    private int _facingDirection = 1;
+    private bool _isFacingRight = true;
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundedCheckDistance));
@@ -88,9 +96,28 @@ public class Player : MonoBehaviour
         _stateMachine.CurrentState.Update();
     }
 
+    public void Flip()
+    {
+        _facingDirection *= -1;
+        _isFacingRight = !_isFacingRight;
+        transform.Rotate(0, 180, 0);
+    }
+
+    public void FlipController(float x)
+    {
+        if (x > 0 && !_isFacingRight)
+        {
+            Flip();
+        } else if (x < 0 && _isFacingRight)
+        {
+            Flip();
+        }
+    }
+
     public void SetVelocity(float xVelocity, float yVelocity)
     {
         _rigidbody2D.velocity = new Vector2(xVelocity, yVelocity);
+        FlipController(xVelocity);
     }
 
     public bool IsGroundDetected() =>
